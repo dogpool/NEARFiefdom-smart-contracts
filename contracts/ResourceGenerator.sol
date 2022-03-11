@@ -2,19 +2,24 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./ResourcesERC1155.sol";
 import "./NEARFiefdomLib.sol";
 
 // This should be upgradable
-contract ResourceGenerator {
+contract ResourceGeneratorUpgradable is Initializable, ContextUpgradable{
     IERC721 tiles;
     ResourcesERC1155 resourceTokens;
     mapping(uint256 => NEARFiefdomLib.Tile) tileData;
 
     // Need to turn this into the init function instead of having a constructor
-    constructor(IERC721 _tiles, ResourcesERC1155 _resourceTokens) {
-        tiles = _tiles;
-        resourceTokens = _resourceTokens;
+    function ResourceGen_init(IERC721 _tiles, ResourcesERC1155 _resourceTokens) internal initializer{
+        __Context_init_unchained();
+        __ResourceGen_init_unchained(tiles, resouceTokens);
+    }
+     function ResourceGen_init_unchained(IERC721 _tiles, ResourcesERC1155 _resourceTokens) internal initializer{
+        _tiles = tiles;
+        _resourceTokens = resourceTokens;
     }
 
 
